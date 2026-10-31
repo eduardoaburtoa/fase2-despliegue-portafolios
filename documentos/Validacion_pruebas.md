@@ -16,6 +16,8 @@ Figura 1. Arquitectura de la solución: navegador, Streamlit, FastAPI y modelo c
 
 La Figura 1 ubica los componentes que valido. El [manual, sección Arquitectura e integración](Manual_despliegue.md#arquitectura-e-integración), conserva la secuencia completa, la autenticación, los errores y los cinco ejemplos ejecutados. El hash se verifica al arrancar, no en cada noticia; las respuestas no autorizan operaciones. Esta tabla delimita las rutas sometidas a prueba:
 
+Tabla 1. Endpoints sometidos a validación.
+
 | Ruta | Acceso y comprobación |
 |---|---|
 | GET /health | Pública: salud y disponibilidad del modelo |
@@ -39,6 +41,8 @@ La aplicación se probó primero en Python 3.12 y después en Docker Desktop, co
 Las pruebas de contrato usan FastAPI TestClient. La prueba adicional scripts/smoke.py utiliza HTTP real. scripts/regression_http.py envía las 452 noticias al puerto publicado del contenedor y compara sus probabilidades. Finalmente, el cliente de Streamlit se ejecuta dentro del contenedor web para consultar api:8000; eso comprueba la resolución de servicio, red y credencial entre componentes.
 
 ## Casos funcionales y extremos
+
+Tabla 2. Casos funcionales y extremos.
 
 | Grupo | Entrada o condición | Resultado esperado y observado |
 |---|---|---|
@@ -64,6 +68,8 @@ Durante la inspección del navegador detecté que una expresión condicional de 
 
 ## Resultados del modelo dentro de Docker
 
+Tabla 3. Resultados del modelo conservado.
+
 | Métrica | Resultado |
 |---|---|
 | Verdaderos negativos | 366 |
@@ -82,11 +88,24 @@ La regresión HTTP inicial tardó aproximadamente 1.32 segundos para las 452 sol
 
 ## Análisis del comportamiento del modelo
 
+La Figura 2 muestra qué errores produce el modelo en el test conservado.
+
+![Matriz de confusión del test](../evidencias/matriz_confusion_revision.png)
+
+Figura 2. Matriz de confusión de 452 noticias con umbral 0.20.
+
+De las 61 noticias negativas, 51 activan alerta y 10 se omiten. Las otras 25 alertas corresponden a noticias no negativas. La clase positiva del clasificador significa noticia negativa; no es una valoración de rentabilidad. El umbral no se modifica con estos resultados retrospectivos.
+
+
+La Figura 3 permite revisar la concentración de probabilidades alrededor del umbral.
+
 ![Distribución de probabilidades](../evidencias/distribucion_probabilidades.png)
 
-Figura 2. Distribución retrospectiva de probabilidades en las 452 noticias conservadas.
+Figura 3. Distribución retrospectiva de probabilidades en las 452 noticias conservadas.
 
 Defino cerca del umbral como la banda descriptiva de 0.19 a 0.21, inclusive: contiene 5 noticias. No es un intervalo de confianza. En la frontera, una variación pequeña de puntuación puede cambiar la prioridad de lectura sin que cambie el riesgo económico del cliente. Por ello no uso la alerta como instrucción de inversión. El histograma y los conteos se regeneran con scripts/analyze_behavior.py y quedan respaldados por evidencias/comportamiento_modelo.json, que identifica el CSV mediante SHA256.
+
+Tabla 4. Sensibilidad descriptiva del umbral.
 
 | Umbral exploratorio | Alertas | Cambios frente a 0.20 | FP | FN |
 |---|---|---|---|---|
@@ -96,9 +115,19 @@ Defino cerca del umbral como la banda descriptiva de 0.19 a 0.21, inclusive: con
 
 Bajar a 0.19 agrega dos falsas alertas; subir a 0.21 retira tres falsas alertas en este conjunto. Ninguna de las dos alternativas recupera los diez falsos negativos. Es un diagnóstico retrospectivo, no una selección válida de un nuevo umbral: mantengo 0.20 y reservo cualquier decisión futura para validación independiente.
 
+La Figura 4 compara longitudes por etiqueta original; las tres clases conservan rangos solapados.
+
+![Longitud por etiqueta original](../evidencias/longitud_por_clase.png)
+
+Figura 4. Longitud de las noticias por etiqueta original en el test retrospectivo.
+
+Las medianas son 21 unidades léxicas para las 61 noticias negativas, 18 para las 277 neutrales y 20.5 para las 114 positivas. Los rangos respectivos son 4–45, 3–43 y 5–48. Cuento coincidencias de `\b\w+\b`, no tokens del modelo. Las cajas abarcan el rango intercuartílico; los bigotes usan 1.5 veces ese rango y los puntos exteriores se conservan. La longitud sola no separa clases ni explica causalmente los errores. Fuente: scripts/visualize_validation.py y evidencias/analisis_visual.json.
+
 ### Lectura de errores concretos
 
 Seleccioné los primeros tres errores de cada tipo en el orden del CSV, sin presentarlos como una muestra aleatoria ni una explicación causal del modelo. Los textos originales completos están en el JSON de evidencia; aquí resumo su contenido (Malo et al., 2014).
+
+Tabla 5. Ejemplos de falsos negativos y falsos positivos.
 
 | Caso | Probabilidad | Lectura del texto y consecuencia operativa |
 |---|---|---|
@@ -126,6 +155,8 @@ Para C001, con posición de $11,858,000, migrar 35 % supone $4,150,300. Una mejo
 El 1 % por compra y 1 % por venta no se presenta como tarifa general de BBVA. El índice de fondos heredado tiene corte al 22 de octubre de 2026; hay que confirmar cada serie, periodicidad y vigencia en el original. Las comisiones de fondos no equivalen al ingreso neto del banco. Si el rendimiento introducido ya es neto, no descuento de nuevo el mismo gasto.
 
 ## Evidencia y criterios de aceptación
+
+Tabla 6. Evidencias por criterio.
 
 | Criterio de la rúbrica | Evidencia verificable |
 |---|---|
@@ -156,6 +187,8 @@ Docker separa servicios y controla el arranque (Docker, Inc., s. f.-a); FastAPI 
 ## Cobertura textual de la rúbrica
 
 Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Durante las ramas de edición, la trazabilidad se verifica por sección. Las páginas se recalcularán en la exportación final; los PDF 1.1.0 permanecen sin cambios hasta entonces.
+
+Tabla 7. Cobertura de los cuatro criterios.
 
 | Criterio | Sección verificable | Página del PDF |
 |---|---|---|

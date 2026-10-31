@@ -1,0 +1,80 @@
+[
+    {
+        "Id": "sha256:6d6737baf6a53c825a4284ec9bc97c3ce4fc83fa1541faca4557d6eb17dc47d5",
+        "RepoTags": [
+            "vertice-fase2:1.0.0"
+        ],
+        "RepoDigests": [
+            "vertice-fase2@sha256:6d6737baf6a53c825a4284ec9bc97c3ce4fc83fa1541faca4557d6eb17dc47d5"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-30T22:30:13.417350589Z",
+        "Config": {
+            "User": "app",
+            "ExposedPorts": {
+                "8000/tcp": {},
+                "8501/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.16",
+                "PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "PIP_NO_CACHE_DIR=1",
+                "PYTHONPATH=/app"
+            ],
+            "Cmd": [
+                "python",
+                "scripts/start.py"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "com.docker.compose.project": "repo",
+                "com.docker.compose.service": "api",
+                "com.docker.compose.version": "5.6.1"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 1107352871,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:685889762157cefb6370119253b3c709f70bb2622402052065c92243e3d9105f",
+                "sha256:5c0bc5ee0491a1a68853ceaecd26669d4e40028743b5ae987ee7ca5f9537680f",
+                "sha256:e3af5abbdc37fa9b5b795480004e631040ad0b537c2174d07352e25c43d1d0ed",
+                "sha256:013d8fa6cec40683d59b02f867200c97732ee03b6ce0a5816df5702a353ffedc",
+                "sha256:06ede98f2b1b4279b2427de8219a0958902c1284609332def458976d6394aa67",
+                "sha256:1ae2e10349b5f1b5f23b34946ed525a521c8e24b90fc9209e5044c62c31588c9",
+                "sha256:a3b6566bd7a8fcf9b7e0205f431b3d8c5cfa34858e28d7a450749820b5ad9c0a",
+                "sha256:b32cf3c1a784d0267e1dc60edbc80ed57507bcd334c23e5f2a2fd8ccfea837b2",
+                "sha256:1ae854531a05469809bdb7a38d93ed4509502048b9dd90d1c8397dd0953d1ec2",
+                "sha256:575a49235ecb76a5d1ccbf1a3fb67d5961c71788461ec6cf25b4d8e3152069f7",
+                "sha256:8a31d9b699c3c2a3cf2bd565815fbf3d02227263d5bec57680e9f39699aa74b3",
+                "sha256:6e76f97f6000f6eca57d6164621af1c0e11557421022ac65eecc7d05ed98c378",
+                "sha256:d5a61765e8141ae63d7af8386a8703bc712eb33a212792689834a99e8be563b5",
+                "sha256:59d3e4e2f47f33d5ca50eeb11d2bec685bcd6e98df522e5d0f86f8c5f00777e6"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-30T22:30:13.497982756Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:6d6737baf6a53c825a4284ec9bc97c3ce4fc83fa1541faca4557d6eb17dc47d5",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "k5f46vmbwkpai3i9nnwgdeuhk",
+                    "CreatedAt": "2026-10-30T22:30:13.521425464Z"
+                }
+            ]
+        }
+    }
+]

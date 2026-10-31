@@ -1,0 +1,37 @@
+services:
+  api:
+    build: .
+    image: vertice-fase2:1.0.0
+    environment:
+      API_TOKEN: ${API_TOKEN:?Define API_TOKEN en .env}
+      SERVICE: api
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  web:
+    image: vertice-fase2:1.0.0
+    environment:
+      SERVICE: web
+      API_URL: http://api:8000
+      API_TOKEN: ${API_TOKEN:?Define API_TOKEN en .env}
+    ports: ["127.0.0.1:8501:8501"]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]

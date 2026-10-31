@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## 1.1.1 — 2026-10-31
+
+- Portada organizada primero por los cuatro criterios de Fase II y sus resultados ejecutados.
+- Contexto comercial trasladado a un anexo, conservando cifras y salvedades.
+- Matriz de confusión y longitud por clase generadas desde el test congelado, con script y datos de respaldo.
+- Anexo de lectura visual y aclaración del alcance: esta fase no exige cuaderno de entrenamiento.
+- No cambia el modelo, el umbral, la aplicación ni las pruebas; los informes 1.1.0 conservan su contenido.
+
 ## 1.1.0 — 2026-10-31
 
 - Arquitectura en los documentos, contrato OpenAPI y cinco ejemplos ejecutados.

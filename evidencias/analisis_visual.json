@@ -1,0 +1,39 @@
+{
+  "source": "datos/predicciones_test.csv",
+  "sha256": "ac1c67489c5f7c0eb9eefdc956829a5c791b5b7c62e9450282475cbcfaaa819b",
+  "n": 452,
+  "threshold": 0.2,
+  "confusion_matrix": [
+    [
+      366,
+      25
+    ],
+    [
+      10,
+      51
+    ]
+  ],
+  "matrix_axes": "filas: real 0/1; columnas: predicción 0/1; 1=negativa",
+  "length_definition": "Número de coincidencias regex \\b\\w+\\b; no son tokens del modelo.",
+  "length_by_original_label": {
+    "negative": {
+      "n": 61,
+      "median": 21,
+      "min": 4,
+      "max": 45
+    },
+    "neutral": {
+      "n": 277,
+      "median": 18,
+      "min": 3,
+      "max": 43
+    },
+    "positive": {
+      "n": 114,
+      "median": 20.5,
+      "min": 5,
+      "max": 48
+    }
+  },
+  "scope": "Descripción retrospectiva; no evaluación nueva, explicación causal ni criterio de ajuste."
+}

@@ -1,0 +1,36 @@
+{
+  "fecha_utc": "2026-10-31T03:55:11.756279+00:00",
+  "docker-compose-ps.png": {
+    "tipo": "render de stdout real",
+    "fuente": "docker-compose-ps.txt"
+  },
+  "arquitectura.png": {
+    "tipo": "diagrama documental",
+    "fuente": [
+      "compose.yaml",
+      "backend/main.py",
+      "frontend/client.py"
+    ]
+  },
+  "streamlit-escenario.png": {
+    "tipo": "captura real del navegador",
+    "url": "http://localhost:8501",
+    "caso": "C001, 35 %, 3 pp, 12 meses, Moderado",
+    "fecha_utc": "2026-10-31T08:41:29.244351+00:00"
+  },
+  "github-topics.png": {
+    "tipo": "captura real del navegador",
+    "temas": [
+      "docker",
+      "fastapi",
+      "streamlit",
+      "mlops",
+      "banking",
+      "tecmilenio"
+    ]
+  },
+  "swagger_captura": {
+    "estado": "pendiente",
+    "motivo": "El control de acceso del navegador rechazó abrir localhost:8000; no se intentó eludirlo. El contrato y las respuestas reales están disponibles por separado."
+  }
+}

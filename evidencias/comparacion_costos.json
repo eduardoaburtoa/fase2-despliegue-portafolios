@@ -1,0 +1,35 @@
+{
+  "consulta": "2026-10-30",
+  "moneda": "USD",
+  "naturaleza": "referencia de catálogo, no gasto ejecutado",
+  "iaas": {
+    "fuente": "https://cloud.google.com/products/compute/pricing/general-purpose",
+    "region": "us-central1",
+    "instancia": "e2-medium",
+    "tarifa_hora": 0.03350571,
+    "horas_supuestas": 730,
+    "subtotal_compute": 24.4591683,
+    "excluye": [
+      "disco",
+      "IP",
+      "transferencia",
+      "impuestos"
+    ]
+  },
+  "cloud_run": {
+    "fuente": "https://cloud.google.com/run/pricing",
+    "costo_en_cuota_compute": 0,
+    "consumo_observado": null,
+    "costo_total_estimado": null
+  },
+  "streamlit": {
+    "fuente": "https://docs.streamlit.io/deploy/streamlit-community-cloud",
+    "precio_alojamiento": 0
+  },
+  "render": {
+    "fuente": "https://render.com/docs/free",
+    "plan": "Free",
+    "precio_alojamiento": 0,
+    "limitacion": "cuotas compartidas y suspensión por inactividad"
+  }
+}

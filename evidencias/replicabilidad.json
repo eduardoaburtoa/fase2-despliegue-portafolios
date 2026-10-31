@@ -1,0 +1,289 @@
+{
+  "fecha_utc": "2026-10-31T08:35:30.062607+00:00",
+  "entorno": "Ubuntu 24.04 limpio: intento inicial ordinario y réplica completa con daemon aislado de laboratorio",
+  "estado": "completa_en_laboratorio",
+  "hallazgo": "El intento inicial falló porque el contenedor ordinario no dispone de systemd ni daemon Docker. Se corrigió el prerrequisito del manual y se acreditó después construcción, Compose healthy, 23 pruebas y regresión HTTP mediante un daemon aislado en un contenedor privilegiado de laboratorio, sin socket ni carpetas del host. Este modo no se recomienda en producción.",
+  "pasos": [
+    {
+      "paso": "01_ubuntu_limpio",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "run",
+        "-d",
+        "--name",
+        "fase2-replica-medida-v110",
+        "ubuntu:24.04",
+        "sleep",
+        "infinity"
+      ],
+      "segundos": 0.1744161667302251,
+      "exit_code": 0,
+      "log": "replica_01_ubuntu_limpio.txt"
+    },
+    {
+      "paso": "02_prerrequisitos",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git python3 ca-certificates curl"
+      ],
+      "segundos": 13.579755458980799,
+      "exit_code": 0,
+      "log": "replica_02_prerrequisitos.txt"
+    },
+    {
+      "paso": "03_clonar",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "git",
+        "clone",
+        "https://github.com/eduardoaburtoa/fase2-despliegue-portafolios.git",
+        "/tmp/proyecto"
+      ],
+      "segundos": 1.5227511655539274,
+      "exit_code": 0,
+      "log": "replica_03_clonar.txt"
+    },
+    {
+      "paso": "04_instalador_docker",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "/tmp/proyecto/scripts/install_docker_ubuntu.sh"
+      ],
+      "segundos": 15.073514208197594,
+      "exit_code": 1,
+      "log": "replica_04_instalador_docker.txt"
+    },
+    {
+      "paso": "05_versiones",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "cat /etc/os-release; docker --version; docker compose version; ps -p 1 -o comm="
+      ],
+      "segundos": 0.07538570743054152,
+      "exit_code": 0,
+      "log": "replica_05_versiones.txt"
+    },
+    {
+      "paso": "06_configurar",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "cd /tmp/proyecto && python3 -c \"import secrets,pathlib;pathlib.Path('.env').write_text('API_TOKEN='+secrets.token_urlsafe(32)+'\\n')\" && chmod 600 .env && docker compose config --quiet"
+      ],
+      "segundos": 0.07222512550652027,
+      "exit_code": 0,
+      "log": "replica_06_configurar.txt"
+    },
+    {
+      "paso": "07_construir",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "cd /tmp/proyecto && docker compose up --build -d --wait --wait-timeout 180"
+      ],
+      "segundos": 0.060596249997615814,
+      "exit_code": 1,
+      "log": "replica_07_construir.txt"
+    },
+    {
+      "paso": "08_detener_entorno",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "stop",
+        "fase2-replica-medida-v110"
+      ],
+      "segundos": 3.203748917207122,
+      "exit_code": 0,
+      "log": "replica_08_detener_entorno.txt"
+    },
+    {
+      "paso": "09_reanudar",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "start",
+        "fase2-replica-medida-v110"
+      ],
+      "segundos": 0.09065066650509834,
+      "exit_code": 0,
+      "log": "replica_09_reanudar.txt"
+    },
+    {
+      "paso": "10_python",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python3-venv && cd /tmp/proyecto && python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt"
+      ],
+      "segundos": 34.250495792366564,
+      "exit_code": 0,
+      "log": "replica_10_python.txt"
+    },
+    {
+      "paso": "11_pruebas",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-medida-v110",
+        "bash",
+        "-lc",
+        "cd /tmp/proyecto && .venv/bin/python -m pytest pruebas -q --junitxml=/tmp/pytest-ubuntu.xml"
+      ],
+      "segundos": 4.288458917289972,
+      "exit_code": 0,
+      "log": "replica_11_pruebas.txt"
+    },
+    {
+      "paso": "12_copiar_junit",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "cp",
+        "fase2-replica-medida-v110:/tmp/pytest-ubuntu.xml",
+        "work/fase2/v110/repo/evidencias/pytest-ubuntu-limpio.xml"
+      ],
+      "segundos": 0.030233416706323624,
+      "exit_code": 0,
+      "log": "replica_12_copiar_junit.txt"
+    },
+    {
+      "paso": "13_detener",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "stop",
+        "fase2-replica-medida-v110"
+      ],
+      "segundos": 3.3521809596568346,
+      "exit_code": 0,
+      "log": "replica_13_detener.txt"
+    },
+    {
+      "paso": "14_snapshot_ubuntu",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "commit",
+        "fase2-replica-medida-v110",
+        "fase2-ubuntu-replica:1.1.0"
+      ],
+      "segundos": 18.380642499774694,
+      "exit_code": 0,
+      "log": "replica_14_snapshot_ubuntu.txt"
+    },
+    {
+      "paso": "15_daemon_aislado",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "run",
+        "-d",
+        "--privileged",
+        "--name",
+        "fase2-replica-dind-v110",
+        "fase2-ubuntu-replica:1.1.0",
+        "dockerd",
+        "--storage-driver=vfs",
+        "--host=unix:///var/run/docker.sock"
+      ],
+      "segundos": 0.42900008242577314,
+      "exit_code": 0,
+      "log": "replica_15_daemon_aislado.txt"
+    },
+    {
+      "paso": "16_esperar_daemon",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-dind-v110",
+        "bash",
+        "-lc",
+        "for i in $(seq 1 30); do docker info >/dev/null 2>&1 && exit 0; sleep 1; done; exit 1"
+      ],
+      "segundos": 0.3331210846081376,
+      "exit_code": 0,
+      "log": "replica_16_esperar_daemon.txt"
+    },
+    {
+      "paso": "17_compose_limpio",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-dind-v110",
+        "bash",
+        "-lc",
+        "cd /tmp/proyecto && docker compose up --build -d --wait --wait-timeout 180 && docker compose ps"
+      ],
+      "segundos": 99.9084564158693,
+      "exit_code": 0,
+      "log": "replica_17_compose_limpio.txt"
+    },
+    {
+      "paso": "18_http_regresion",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "exec",
+        "fase2-replica-dind-v110",
+        "bash",
+        "-lc",
+        "cd /tmp/proyecto && set -a && source .env && set +a && TEST_ENV=ubuntu_limpio .venv/bin/python scripts/smoke.py && TEST_ENV=ubuntu_limpio .venv/bin/python scripts/regression_http.py && docker compose exec -T web python -c \"from frontend.client import call; print(call('/v1/model')['sha256'])\""
+      ],
+      "segundos": 2.3937794575467706,
+      "exit_code": 0,
+      "log": "replica_18_http_regresion.txt"
+    },
+    {
+      "paso": "copiar_regresion_ubuntu_limpio.json",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "cp",
+        "fase2-replica-dind-v110:/tmp/proyecto/evidencias/regresion_ubuntu_limpio.json",
+        "work/fase2/v110/repo/evidencias/regresion_ubuntu_limpio.json"
+      ],
+      "segundos": 0.03517024964094162,
+      "exit_code": 0,
+      "log": "replica_copiar_regresion_ubuntu_limpio.json.txt"
+    },
+    {
+      "paso": "copiar_smoke_ubuntu_limpio.json",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "cp",
+        "fase2-replica-dind-v110:/tmp/proyecto/evidencias/smoke_ubuntu_limpio.json",
+        "work/fase2/v110/repo/evidencias/smoke_ubuntu_limpio.json"
+      ],
+      "segundos": 0.018606792204082012,
+      "exit_code": 0,
+      "log": "replica_copiar_smoke_ubuntu_limpio.json.txt"
+    },
+    {
+      "paso": "19_detener_dind",
+      "comando": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "stop",
+        "fase2-replica-dind-v110"
+      ],
+      "segundos": 2.3361343331635,
+      "exit_code": 0,
+      "log": "replica_19_detener_dind.txt"
+    }
+  ],
+  "alternativa": "Tras el fallo de systemd, snapshot del Ubuntu limpio preparado y daemon Docker aislado con almacenamiento vfs; contenedor privilegiado de laboratorio, sin socket ni carpetas del host. No usar este modo en producción."
+}

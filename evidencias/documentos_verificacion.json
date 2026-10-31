@@ -1,0 +1,22 @@
+{
+  "fecha_utc": "2026-10-31T15:48:33.829Z",
+  "manual": {
+    "url": "https://docs.google.com/document/d/1Xr2oBZBLeh-ZRx4wDzZ1xfWhC9lattDz5qfKKJPVlWA/edit",
+    "comparacion_parrafos_docx": {
+      "paragraphs": 376,
+      "missing": []
+    },
+    "incognito": "lectura pública comprobada",
+    "captura": "google-manual-incognito.png"
+  },
+  "validacion": {
+    "url": "https://docs.google.com/document/d/1v5b0XYiLvcQmZwQp8CwbwbKsOda9S5Wc3Vy8zFcjvt8/edit",
+    "comparacion_parrafos_docx": {
+      "paragraphs": 350,
+      "missing": []
+    },
+    "incognito": "lectura pública comprobada",
+    "captura": "google-validacion-incognito.png"
+  },
+  "nota": "El propietario conserva edición; visitantes anónimos sólo lectura. Verificación de contenido normaliza espacios; no afirma identidad de paginación entre Google Docs y PDF."
+}

@@ -1,0 +1,3 @@
+NAME         IMAGE                 COMMAND                  SERVICE   CREATED       STATUS                 PORTS
+repo-api-1   vertice-fase2:1.0.0   "python scripts/star…"   api       5 hours ago   Up 5 hours (healthy)   127.0.0.1:8000->8000/tcp
+repo-web-1   vertice-fase2:1.0.0   "python scripts/star…"   web       5 hours ago   Up 5 hours (healthy)   127.0.0.1:8501->8501/tcp

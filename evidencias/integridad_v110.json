@@ -1,0 +1,34 @@
+{
+  "backend/main.py": {
+    "sha256": "c07d6651749a00ced59a21aea77f54a17a155c9892ef8722c86111b3517cf517",
+    "sin_cambios": true
+  },
+  "frontend/app.py": {
+    "sha256": "a2750c59738cd7f8e7f4310fc536eaa5b437e9d8cd267cbf1c41849bef7be79c",
+    "sin_cambios": true
+  },
+  "frontend/client.py": {
+    "sha256": "15af049250ef0baafc2fad5044408b573cf84c6369a4a102fa8341c492bba13e",
+    "sin_cambios": true
+  },
+  "modelos/modelo_SVM_calibrada.joblib": {
+    "sha256": "f48c7496d5a12bd15d535721e3e83c6ef895b1ae7eaccbe7f4f4c60705bb1916",
+    "sin_cambios": true
+  },
+  "pruebas/test_api.py": {
+    "sha256": "4b67f7bf48b500277c7e83618a625951ebc8cc8187d09f9fe1c1c9e122a5f8c0",
+    "sin_cambios": true
+  },
+  "pruebas/test_frontend.py": {
+    "sha256": "4bcfc6b15763935dc5d6f7f340f15b8427f36f2dc9c95f9124d0d36517d4d003",
+    "sin_cambios": true
+  },
+  "scripts/smoke.py": {
+    "sha256": "358df9efd6940395429fa382617a880110643fca65064e4b9cadbe51cdca4984",
+    "sin_cambios": true
+  },
+  "scripts/regression_http.py": {
+    "sha256": "252a7821ccd1adb2984a60331680a70b1abb3fff3b4c7cf4c04b133c227b7e12",
+    "sin_cambios": true
+  }
+}

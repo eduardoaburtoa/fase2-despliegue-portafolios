@@ -11,6 +11,9 @@ Como banquero Sr., quiero preparar revisiones mejor fundamentadas y cuidar el pe
 | Quiero… | Abrir |
 |---|---|
 | Ejecutar la aplicación | [Inicio rápido](#inicio-rápido) |
+| Analizar probabilidades y errores | [Análisis del modelo](documentos/Validacion_pruebas.md#análisis-del-comportamiento-del-modelo) · [JSON reproducible](evidencias/comportamiento_modelo.json) |
+| Consultar el contrato API | [OpenAPI](documentos/openapi.json) · [Referencia HTML para descargar](documentos/api-reference.html) · [Cinco ejemplos ejecutados](evidencias/ejemplos_api.json) |
+| Auditar la reproducción | [Pasos y tiempos](evidencias/replicabilidad.json) |
 | Entender el despliegue | [Manual paso a paso](documentos/Manual_despliegue.md) |
 | Revisar los resultados reales | [Validación y pruebas](documentos/Validacion_pruebas.md) |
 | Consultar la evidencia | [Carpeta de evidencias](evidencias/) y [ejecuciones automáticas](https://github.com/eduardoaburtoa/fase2-despliegue-portafolios/actions) |
@@ -24,8 +27,8 @@ Como banquero Sr., quiero preparar revisiones mejor fundamentadas y cuidar el pe
 
 | Documento | PDF | Word | Google editable |
 |---|---|---|---|
-| Manual de despliegue | [Leer](documentos/Manual_despliegue.pdf) | [Descargar](documentos/Manual_despliegue.docx) | [Editar en Google Docs](https://docs.google.com/document/d/1LV_KBLT7Qy7byvUB1MLYx707zmAkGK9t4W1OGwsUzeg/edit) |
-| Validación y pruebas | [Leer](documentos/Validacion_pruebas.pdf) | [Descargar](documentos/Validacion_pruebas.docx) | [Editar en Google Docs](https://docs.google.com/document/d/1yTqjSho-RLJXCOgaJ0zn8dESHhs_sANzRZKyG5xz6cE/edit) |
+| Manual de despliegue | [Leer](documentos/Manual_despliegue.pdf) | [Descargar](documentos/Manual_despliegue.docx) | [Editar en Google Docs](https://docs.google.com/document/d/1Xr2oBZBLeh-ZRx4wDzZ1xfWhC9lattDz5qfKKJPVlWA/edit) |
+| Validación y pruebas | [Leer](documentos/Validacion_pruebas.pdf) | [Descargar](documentos/Validacion_pruebas.docx) | [Editar en Google Docs](https://docs.google.com/document/d/1v5b0XYiLvcQmZwQp8CwbwbKsOda9S5Wc3Vy8zFcjvt8/edit) |
 
 ![Streamlit ejecutándose dentro de Docker](evidencias/streamlit-docker.png)
 
@@ -62,6 +65,8 @@ Los puertos están ligados a localhost. El manual propone acceso privado mediant
 
 ## Arquitectura
 
+![Arquitectura de la solución](evidencias/arquitectura.png)
+
 ```mermaid
 flowchart LR
     U[Banquero en navegador] --> S[Streamlit puerto 8501]
@@ -91,6 +96,8 @@ Se conservan [61 fichas indexadas](contexto/fichas_bbva.csv) y [693 registros po
 
 ## Pruebas reproducibles
 
+Mantén Docker encendido durante las comprobaciones HTTP; ejecuta `docker compose down` al terminar todas las pruebas, no antes. Para recrear el histograma instala además `matplotlib==3.10.3` y ejecuta `python scripts/analyze_behavior.py`. Este análisis no cambia el modelo.
+
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -119,3 +126,20 @@ La suite cubre contrato, autenticación, entradas inválidas, vocabulario descon
 [Actividad 4](https://github.com/eduardoaburtoa/motor-senales-nlp) · [Actividad 5](https://github.com/eduardoaburtoa/actividad5-mlflow-portafolios) · [Actividad 6](https://github.com/eduardoaburtoa/actividad6-evaluacion-portafolios)
 
 Trabajo académico personal; no es un producto oficial de BBVA. Financial PhraseBank conserva su licencia **CC BY-NC-SA 3.0**, que limita uso comercial. Véase [AVISO](AVISO.md). La documentación se preparó con apoyo de ChatGPT/Codex y se contrasta con ejecuciones y archivos; no se atribuye uso de Copilot no realizado.
+
+## Continuidad del proyecto
+
+Mi proyecto parte del motor de señales de rotación de fondos de inversión con IA para banca patrimonial, privada y casa de bolsa. La Actividad 4 comparó modelos preentrenados de Hugging Face para leer notas de mercado; la Actividad 5 registró el entrenamiento en MLflow; la Actividad 6 evaluó la SVM calibrada con umbral 0.20. La Fase I construyó el business case y esta Fase II convierte el modelo conservado en una aplicación integrada y desplegable.
+
+Conservo las cifras de mi business case sin recalcularlas: alcance de 24 asesores por 150 clientes, 3,600 clientes y AUM simulado de $54,397 millones; inversión del piloto de $9,083,448 en los meses 1 a 9 con seis asesores; operación anual de $4,769,996. El beneficio esperado a pleno funcionamiento es $40,540,443 al año, con ROI a tres años de 298.6 % y recuperación en el mes 13; el escenario conservador plantea 38.8 % y mes 25 (Aburto Angulo, 2026).
+
+La razón económica del proyecto es que, bajo aquellos supuestos, los clientes pagarían $79.65 millones de corretaje y conservarían $82.72 millones de rendimiento adicional: $1.04 por cada peso de corretaje. El umbral de rotación planteado es una mejora de 3.0 puntos porcentuales frente al costo supuesto de 2 %. Los supuestos críticos son S-14, detección actual de 30 %; S-15, aceptación de 70 %; y S-16, seis rotaciones no justificadas al año. Son hipótesis del caso de negocio, no resultados de esta aplicación.
+
+Materializo la lectura de noticias con PLN y un escenario que calcula el costo didáctico del 2 % y la compatibilidad del perfil antes de proponer una revisión. Quedan para Fase III la proyección de rendimiento por clase de activo, la combinación de señales con el umbral financiero de 3.0 puntos, la integración con órdenes y el tablero de KPI. El umbral financiero de 3.0 puntos no debe confundirse con la probabilidad 0.20 del clasificador.
+
+El riesgo R-01 es el conflicto de interés: la institución gana cuando el cliente se mueve. El control previsto exige suspender y recalibrar el motor si más de 25 % de las rotaciones recomendadas no supera su costo a doce meses. Este control todavía no está automatizado. La Fase II acredita que la arquitectura funciona, no que el ROI de 298.6 % se vaya a materializar; eso se mide en el piloto de nueve meses. La IA no sustituye el criterio del banquero; lo aumenta.
+
+
+## Cierre de revisión 1.1.0
+
+Consulta el [estado de las brechas A–G](documentos/Cierre_brechas.md) y la [bitácora reproducible de Ubuntu](documentos/Reproduccion_Ubuntu.md). Ambos documentos de Google abren sin iniciar sesión; el propietario conserva la edición. La captura nueva de Swagger continúa pendiente por una restricción del navegador; no se sustituye con una imagen simulada.

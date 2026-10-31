@@ -8,12 +8,24 @@
     "longest_identical_block": 124
   },
   "after": {
-    "manual_lines": 416,
-    "validation_lines": 193,
-    "matching_lines_including_blanks": 71,
+    "manual_lines": 438,
+    "validation_lines": 226,
+    "matching_lines_including_blanks": 83,
     "longest_identical_block": 10
   },
   "architecture_block_preserved_in_manual": true,
+  "visual_checks": {
+    "documentos/Manual_despliegue.md": {
+      "figures": 3,
+      "tables": 4,
+      "references": "passed"
+    },
+    "documentos/Validacion_pruebas.md": {
+      "figures": 4,
+      "tables": 7,
+      "references": "passed"
+    }
+  },
   "structure_checks": "passed",
   "pagination": "Secciones trazadas; páginas se recalculan en exportación final."
 }

@@ -14,9 +14,11 @@ Mi prioridad es preservar el perfil del cliente y revisar su beneficio neto. El 
 
 Figura 1. Arquitectura de la solución: navegador, Streamlit, FastAPI y modelo conservado.
 
-El navegador conversa con Streamlit; sólo el servidor Streamlit conoce la clave y llama a FastAPI por la red de Compose. Al iniciar la API, antes de aceptar peticiones, se verifica el SHA256 del modelo contra el manifiesto. Esa comprobación ocurre al arranque, no en cada noticia. El archivo conservado se carga únicamente si coincide.
+La Figura 1 resume la comunicación. El navegador conversa con Streamlit; sólo el servidor Streamlit conoce la clave y llama a FastAPI por la red de Compose. Al iniciar la API, antes de aceptar peticiones, se verifica el SHA256 del modelo contra el manifiesto. Esa comprobación ocurre al arranque, no en cada noticia. El archivo conservado se carga únicamente si coincide.
 
 Secuencia de una revisión: (1) el banquero escribe una noticia en inglés; (2) Streamlit envía POST a http://api:8000/v1/predict con X-API-Key; (3) FastAPI valida el esquema, la credencial y la presencia de vocabulario conocido; (4) el modelo ya verificado produce la probabilidad; (5) la API compara con 0.20; (6) la pantalla muestra probabilidad, prioridad y la leyenda de revisión humana. Un error de red se presenta de forma comprensible y no se sustituye por una predicción inventada.
+
+Tabla 1. Contrato de endpoints y autenticación.
 
 | Ruta y método | Autenticación | Entrada | Salida | Errores previstos |
 |---|---|---|---|---|
@@ -135,6 +137,8 @@ POST /v1/scenario — HTTP 200.
 
 Comparo el control operativo, la facilidad de acceso del docente y la superficie expuesta antes de elegir infraestructura. Los importes son referencias de catálogo en USD consultadas el 30 de octubre de 2026, no cargos observados ni presupuestos aprobados. El cálculo reproducible y los supuestos están en evidencias/comparacion_costos.json (Google Cloud, s. f.-a; Streamlit, s. f.; Render, s. f.).
 
+Tabla 2. Comparación de tres rutas de despliegue.
+
 | Ruta | Esfuerzo de puesta en marcha | Costo mensual aproximado | Portabilidad | Exposición de red | Cuándo la elegiría |
 |---|---|---|---|---|---|
 | IaaS Compute Engine y túnel SSH | Mayor: administrar Ubuntu, Docker, actualizaciones y respaldo | USD 24.46 sólo por e2-medium durante 730 horas; disco, IP y transferencia aparte | Alta con Docker; el sistema operativo queda a mi cargo | SSH restringido; aplicación accesible por túnel | Demostración privada con control de la máquina |
@@ -149,6 +153,8 @@ Aclaro una limitación de arquitectura: frontend y backend no tienen que convivi
 Elijo conservar Compute Engine con túnel como referencia de demostración privada y mantener Render Free como alternativa opcional, no ejecutada ni necesaria para esta rúbrica. Para un piloto posterior elegiría Cloud Run con autenticación y gobierno de secretos. Con ánimo de avanzar sin aumentar el riesgo reputacional, separo una URL demostrativa de una autorización para utilizar datos u operaciones reales.
 
 ## Requisitos y componentes
+
+Tabla 3. Requerimientos técnicos.
 
 | Requerimiento técnico | Configuración y alcance |
 |---|---|
@@ -212,6 +218,20 @@ python scripts/export_docs.py
 python scripts/analyze_behavior.py
 docker compose down
 ```
+
+La Figura 2 acredita el estado de los servicios tras la ejecución local.
+
+![Servicios Docker saludables](../evidencias/docker-compose-ps.png)
+
+Figura 2. Salida real de docker compose ps con API y Streamlit saludables, presentada como imagen de texto.
+
+La fuente legible es evidencias/docker-compose-ps.txt; esta imagen es un render de stdout, no una captura de terminal.
+
+La Figura 3 muestra el motor de escenario integrado: cliente ficticio C001, proporción 35 %, mejora supuesta 3 puntos, 12 meses y perfil Moderado. El beneficio mostrado depende de esas hipótesis y no es una predicción del clasificador.
+
+![Escenario resuelto en Streamlit](../evidencias/streamlit-escenario.png)
+
+Figura 3. Escenario didáctico resuelto en Streamlit y comunicado a la API local.
 
 ## Preparación de Google Cloud
 
@@ -371,6 +391,8 @@ Con ánimo de dejar una entrega que otro banquero pueda revisar, documenté la a
 ## Cobertura textual de la rúbrica
 
 Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Durante las ramas de edición, la trazabilidad se verifica por sección. Las páginas se recalcularán en la exportación final; los PDF 1.1.0 permanecen sin cambios hasta entonces.
+
+Tabla 4. Cobertura de los cuatro criterios.
 
 | Criterio | Sección verificable | Página del PDF |
 |---|---|---|

@@ -18,6 +18,8 @@ Como banquero Sr., quiero preparar revisiones mejor fundamentadas y cuidar el pe
 | Revisar el código | [API](backend/main.py) · [Streamlit](frontend/app.py) · [pruebas](pruebas/) |
 | Entender los límites | [Aviso académico](AVISO.md) · [historial](CHANGELOG.md) |
 
+**Validación automática aprobada:** [ver ejecución de GitHub Actions](https://github.com/eduardoaburtoa/fase2-despliegue-portafolios/actions/runs/41163897429). Incluye pruebas, construcción Docker e integración HTTP.
+
 ## Entregables
 
 | Documento | PDF | Word | Google editable |

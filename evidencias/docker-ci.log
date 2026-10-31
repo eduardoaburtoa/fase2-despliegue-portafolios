@@ -1,0 +1,19 @@
+web-1  | 2026-10-31 03:21:20.449 Uvicorn server started on 0.0.0.0:8501
+web-1  | 
+web-1  |   You can now view your Streamlit app in your browser.
+web-1  | 
+web-1  |   Local URL: http://localhost:8501
+web-1  |   Network URL: http://172.18.0.3:8501
+web-1  |   External URL: http://52.176.139.89:8501
+web-1  | 
+api-1  | INFO:     Started server process [1]
+api-1  | INFO:     Waiting for application startup.
+api-1  | INFO:     Application startup complete.
+api-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+api-1  | INFO:     127.0.0.1:47674 - "GET /health HTTP/1.1" 200 OK
+api-1  | INFO:     127.0.0.1:47682 - "GET /health HTTP/1.1" 200 OK
+api-1  | INFO:     172.18.0.1:49476 - "GET /health HTTP/1.1" 200 OK
+api-1  | INFO:     172.18.0.1:49492 - "POST /v1/predict HTTP/1.1" 200 OK
+api-1  | INFO:     172.18.0.1:49498 - "GET /v1/clients HTTP/1.1" 401 Unauthorized
+api-1  | INFO:     172.18.0.1:49512 - "GET /v1/clients HTTP/1.1" 200 OK
+api-1  | INFO:     172.18.0.3:38424 - "POST /v1/predict HTTP/1.1" 200 OK

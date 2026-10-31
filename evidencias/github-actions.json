@@ -1,0 +1,137 @@
+{
+  "run_id": 41163897429,
+  "url": "https://github.com/eduardoaburtoa/fase2-despliegue-portafolios/actions/runs/41163897429",
+  "head_sha": "6e4cd061c05670497c3eac8d8a31b4fe78f0bf76",
+  "status": "completed",
+  "conclusion": "success",
+  "created_at": "2026-10-31T03:19:50Z",
+  "updated_at": "2026-10-31T03:21:33Z",
+  "jobs": [
+    {
+      "id": 124427193827,
+      "name": "validar",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-31T03:19:55Z",
+          "completed_at": "2026-10-31T03:19:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-31T03:19:56Z",
+          "completed_at": "2026-10-31T03:19:57Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-31T03:19:57Z",
+          "completed_at": "2026-10-31T03:19:58Z"
+        },
+        {
+          "name": "Run pip install -r requirements-dev.txt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-31T03:19:58Z",
+          "completed_at": "2026-10-31T03:20:26Z"
+        },
+        {
+          "name": "Run python -m pytest pruebas -q --junitxml=evidencias/pytest-ci.xml",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-31T03:20:26Z",
+          "completed_at": "2026-10-31T03:20:38Z"
+        },
+        {
+          "name": "Run docker compose config --quiet",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-31T03:20:38Z",
+          "completed_at": "2026-10-31T03:20:38Z"
+        },
+        {
+          "name": "Run docker compose up --build -d --wait --wait-timeout 180",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-31T03:20:38Z",
+          "completed_at": "2026-10-31T03:21:24Z"
+        },
+        {
+          "name": "Probar HTTP entre componentes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-31T03:21:24Z",
+          "completed_at": "2026-10-31T03:21:25Z"
+        },
+        {
+          "name": "Run docker compose logs --no-color > evidencias/docker-ci.log",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-31T03:21:25Z",
+          "completed_at": "2026-10-31T03:21:25Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-31T03:21:25Z",
+          "completed_at": "2026-10-31T03:21:27Z"
+        },
+        {
+          "name": "Run docker compose down",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-31T03:21:27Z",
+          "completed_at": "2026-10-31T03:21:28Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-31T03:21:28Z",
+          "completed_at": "2026-10-31T03:21:30Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-31T03:21:30Z",
+          "completed_at": "2026-10-31T03:21:31Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-31T03:21:31Z",
+          "completed_at": "2026-10-31T03:21:31Z"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13028775123,
+      "name": "evidencia-fase2",
+      "size_in_bytes": 68164
+    }
+  ]
+}

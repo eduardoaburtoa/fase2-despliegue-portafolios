@@ -1,0 +1,133 @@
+{
+  "source": "datos/predicciones_test.csv",
+  "sha256": "ac1c67489c5f7c0eb9eefdc956829a5c791b5b7c62e9450282475cbcfaaa819b",
+  "threshold": 0.2,
+  "n": 452,
+  "length_definition": "Coincidencias de \\b\\w+\\b; tramos fijos descriptivos, no optimizados.",
+  "length_segments": [
+    {
+      "segment": "1–15",
+      "n": 158,
+      "negative_count": 15,
+      "predicted_negative_count": 17,
+      "TN": 136,
+      "FP": 7,
+      "FN": 5,
+      "TP": 10,
+      "errors": 12,
+      "recall": 0.6666666666666666,
+      "precision": 0.5882352941176471
+    },
+    {
+      "segment": "16–30",
+      "n": 228,
+      "negative_count": 32,
+      "predicted_negative_count": 43,
+      "TN": 183,
+      "FP": 13,
+      "FN": 2,
+      "TP": 30,
+      "errors": 15,
+      "recall": 0.9375,
+      "precision": 0.6976744186046512
+    },
+    {
+      "segment": "31 o más",
+      "n": 66,
+      "negative_count": 14,
+      "predicted_negative_count": 16,
+      "TN": 47,
+      "FP": 5,
+      "FN": 3,
+      "TP": 11,
+      "errors": 8,
+      "recall": 0.7857142857142857,
+      "precision": 0.6875
+    }
+  ],
+  "probability_bands": [
+    {
+      "band": "[0, 0.10)",
+      "n": 349,
+      "actual_negative": 9,
+      "negative_fraction": 0.025787965616045846,
+      "action": "No priorizo sólo por esta salida; leo el contexto y mantengo controles humanos."
+    },
+    {
+      "band": "[0.10, 0.20)",
+      "n": 27,
+      "actual_negative": 1,
+      "negative_fraction": 0.037037037037037035,
+      "action": "Reviso el contexto si hay otros indicios; no altero el umbral ni descarto riesgo."
+    },
+    {
+      "band": "[0.20, 0.50)",
+      "n": 29,
+      "actual_negative": 11,
+      "negative_fraction": 0.3793103448275862,
+      "action": "Prioriza lectura humana; contrasto la noticia con la fuente antes de cualquier decisión."
+    },
+    {
+      "band": "[0.50, 1]",
+      "n": 47,
+      "actual_negative": 40,
+      "negative_fraction": 0.851063829787234,
+      "action": "Prioriza lectura humana; una probabilidad alta tampoco autoriza una orden ni garantiza acierto."
+    }
+  ],
+  "environments": [
+    {
+      "environment": "host_local_sin_docker",
+      "status": "medido",
+      "source": "evidencias/regresion_host_local_sin_docker.json",
+      "evidence_sha256": "2e81e162a2b76b6d3c48cd6ff062659a8d67d2e39ba5cab68ef8ae94002b047c",
+      "n": 452,
+      "max_absolute_error": 1.1102230246251565e-16,
+      "matrix": [
+        366,
+        25,
+        10,
+        51
+      ],
+      "total_seconds": 0.7766137076541781
+    },
+    {
+      "environment": "docker_local",
+      "status": "medido",
+      "source": "evidencias/regresion_docker_local.json",
+      "evidence_sha256": "0e7284018dd02d3ea5115fceab82e70f6cd79137af42d0236b00978b629619af",
+      "n": 452,
+      "max_absolute_error": 2.7755575615628914e-16,
+      "matrix": [
+        366,
+        25,
+        10,
+        51
+      ],
+      "total_seconds": 1.3215247923508286
+    },
+    {
+      "environment": "docker_ci",
+      "status": "sin medición completa disponible",
+      "max_absolute_error": null,
+      "matrix": null,
+      "total_seconds": null
+    },
+    {
+      "environment": "ubuntu_limpio",
+      "status": "medido",
+      "source": "evidencias/regresion_ubuntu_limpio.json",
+      "evidence_sha256": "a0a52c56ec73a12323d71a1f0f6e2bc5fa8739df04e53a57cfcc95ba8ce25491",
+      "n": 452,
+      "max_absolute_error": 2.7755575615628914e-16,
+      "matrix": [
+        366,
+        25,
+        10,
+        51
+      ],
+      "total_seconds": 0.8666630840016296
+    }
+  ],
+  "limitations": "Test retrospectivo; segmentos pequeños, sin intervalos ni prueba de diferencias entre segmentos. Tiempos de entornos distintos no constituyen benchmark controlado. No cambia el umbral ni el modelo."
+}

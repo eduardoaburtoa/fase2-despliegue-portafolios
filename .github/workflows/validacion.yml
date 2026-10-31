@@ -21,6 +21,8 @@ jobs:
       - name: Probar HTTP entre componentes
         run: |
           TEST_ENV=docker_ci python scripts/smoke.py
+          TEST_ENV=docker_ci python scripts/regression_http.py
+          python scripts/analyze_segments.py
           docker compose exec -T web python -c "from frontend.client import call; assert call('/v1/predict',{'texto':'Operating profit fell sharply.'})['priorizar_revision']"
           curl --fail http://127.0.0.1:8501/_stcore/health
           docker image inspect vertice-fase2:1.0.0 > evidencias/docker-image-ci.json

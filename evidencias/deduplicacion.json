@@ -9,7 +9,7 @@
   },
   "after": {
     "manual_lines": 438,
-    "validation_lines": 226,
+    "validation_lines": 268,
     "matching_lines_including_blanks": 83,
     "longest_identical_block": 10
   },
@@ -22,7 +22,7 @@
     },
     "documentos/Validacion_pruebas.md": {
       "figures": 4,
-      "tables": 7,
+      "tables": 10,
       "references": "passed"
     }
   },

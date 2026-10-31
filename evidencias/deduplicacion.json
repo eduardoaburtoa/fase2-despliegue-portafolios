@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "625aaf9",
+  "method": "SequenceMatcher, autojunk=False; incluye líneas vacías",
+  "before": {
+    "manual_lines": 416,
+    "validation_lines": 316,
+    "matching_lines_including_blanks": 209,
+    "longest_identical_block": 124
+  },
+  "after": {
+    "manual_lines": 416,
+    "validation_lines": 193,
+    "matching_lines_including_blanks": 71,
+    "longest_identical_block": 10
+  },
+  "architecture_block_preserved_in_manual": true,
+  "structure_checks": "passed",
+  "pagination": "Secciones trazadas; páginas se recalculan en exportación final."
+}

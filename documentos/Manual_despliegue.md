@@ -313,11 +313,7 @@ No atribuyo a Copilot un uso que no realicé. Utilicé ChatGPT/Codex para asiste
 
 La repetición completó las 23 pruebas en Ubuntu limpio. Después de registrar el fallo por ausencia de systemd, continué en un contenedor de laboratorio con daemon Docker propio y almacenamiento vfs, sin montar el socket ni carpetas del host. Ese contenedor externo necesita privilegios sólo para Docker anidado; no cambia el usuario ni los controles de los servicios de la aplicación. Se construyó la imagen, ambos servicios alcanzaron healthy, las 452 llamadas reprodujeron las predicciones y el cliente Streamlit consultó la API por nombre de servicio. Este modo es una comprobación de laboratorio y no una recomendación de despliegue productivo. Las bitácoras y los tiempos están en evidencias/replicabilidad.json; la regresión está en evidencias/regresion_ubuntu_limpio.json.
 
-## Conclusiones
-
-Con ánimo de dejar una entrega que otro banquero pueda revisar, documenté la arquitectura, el contrato y los prerrequisitos de cada ruta. Mi elección para esta etapa es la demostración local privada y una guía de nube preparada. Docker y sus controles de arranque facilitan consistencia, pero no sustituyen el gobierno de acceso ni el análisis del cliente (Docker, Inc., s. f.-a, s. f.-b). Una eventual pantalla alojada debe respetar las condiciones de Streamlit (s. f.) y el modelo de identidad del proveedor (Google Cloud, s. f.-c, s. f.-d). La comisión didáctica se distingue de las condiciones por fondo y serie publicadas por BBVA México (s. f.).
-
-## Procedimiento adicional para Cloud Run
+## Anexo: procedimiento adicional para Cloud Run
 
 
 Procedimiento preparado; requiere proyecto con facturación habilitada. No ejecutado en Google Cloud en esta revisión. Usa la misma API y una imagen web derivada para añadir identidad IAM sin modificar el frontend original.
@@ -368,16 +364,20 @@ El proxy local obtiene un ID token de la identidad vertice-web para la audiencia
 Para probar la API privada se necesita además un ID token autorizado en el cliente de prueba. scripts/smoke.py se conserva sin cambios y no implementa IAM: se usa contra la API pública de Render protegida con X-API-Key, o contra localhost. En Cloud Run se debe usar un cliente con Authorization Bearer y X-API-Key, además de comprobar la pantalla y los logs.
 
 
+## Conclusiones
+
+Con ánimo de dejar una entrega que otro banquero pueda revisar, documenté la arquitectura, el contrato y los prerrequisitos de cada ruta. Mi elección para esta etapa es la demostración local privada y una guía de nube preparada. Docker y sus controles de arranque facilitan consistencia, pero no sustituyen el gobierno de acceso ni el análisis del cliente (Docker, Inc., s. f.-a, s. f.-b). Una eventual pantalla alojada debe respetar las condiciones de Streamlit (s. f.) y el modelo de identidad del proveedor (Google Cloud, s. f.-c, s. f.-d). La comisión didáctica se distingue de las condiciones por fondo y serie publicadas por BBVA México (s. f.).
+
 ## Cobertura textual de la rúbrica
 
-Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Las páginas corresponden al PDF de esta revisión; Google Docs puede repaginar según su configuración.
+Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Durante las ramas de edición, la trazabilidad se verifica por sección. Las páginas se recalcularán en la exportación final; los PDF 1.1.0 permanecen sin cambios hasta entonces.
 
 | Criterio | Sección verificable | Página del PDF |
 |---|---|---|
-| Contenerización y despliegue local | Requisitos y componentes; Ejecución local paso a paso | 6–8 |
-| Integración técnica (API, frontend/backend) | Arquitectura e integración; contrato y ejemplos | 3–5 |
-| Pruebas y validación del modelo | Replicabilidad y alcance; documento complementario Validación y pruebas | 11; validación 6–9 |
-| Documentación y repositorio | Herramientas de documentación; manual y rutas evaluadas | 5–13 |
+| Contenerización y despliegue local | Requisitos y componentes; Ejecución local paso a paso | Exportación final \|
+| Integración técnica (API, frontend/backend) | Arquitectura e integración; contrato y ejemplos | Exportación final \|
+| Pruebas y validación del modelo | Replicabilidad y alcance; documento complementario Validación y pruebas | Exportación final \|
+| Documentación y repositorio | Herramientas de documentación; manual y rutas evaluadas | Exportación final \|
 
 ## Referencias
 

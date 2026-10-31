@@ -2,7 +2,7 @@
 
 Eduardo Aburto Angulo · 31 de octubre de 2026 · Versión 1.1.0
 
-## Conclusión y alcance
+## Resumen y alcance
 
 Comprobé que la API y Streamlit se comunican dentro de Docker y que el modelo conserva las predicciones históricas. La suite automatizada aprobó 23 pruebas; la regresión HTTP recorrió 452 noticias y obtuvo una diferencia máxima de 2.78 × 10⁻¹⁶ respecto al archivo de referencia, menor que la tolerancia de 10⁻¹². Ambos servicios alcanzaron estado healthy.
 
@@ -14,122 +14,15 @@ Esta conclusión acredita la integración y consistencia técnica del prototipo 
 
 Figura 1. Arquitectura de la solución: navegador, Streamlit, FastAPI y modelo conservado.
 
-El navegador conversa con Streamlit; sólo el servidor Streamlit conoce la clave y llama a FastAPI por la red de Compose. Al iniciar la API, antes de aceptar peticiones, se verifica el SHA256 del modelo contra el manifiesto. Esa comprobación ocurre al arranque, no en cada noticia. El archivo conservado se carga únicamente si coincide.
+La Figura 1 ubica los componentes que valido. El [manual, sección Arquitectura e integración](Manual_despliegue.md#arquitectura-e-integración), conserva la secuencia completa, la autenticación, los errores y los cinco ejemplos ejecutados. El hash se verifica al arrancar, no en cada noticia; las respuestas no autorizan operaciones. Esta tabla delimita las rutas sometidas a prueba:
 
-Secuencia de una revisión: (1) el banquero escribe una noticia en inglés; (2) Streamlit envía POST a http://api:8000/v1/predict con X-API-Key; (3) FastAPI valida el esquema, la credencial y la presencia de vocabulario conocido; (4) el modelo ya verificado produce la probabilidad; (5) la API compara con 0.20; (6) la pantalla muestra probabilidad, prioridad y la leyenda de revisión humana. Un error de red se presenta de forma comprensible y no se sustituye por una predicción inventada.
-
-| Ruta y método | Autenticación | Entrada | Salida | Errores previstos |
-|---|---|---|---|---|
-| GET /health | Pública | Ninguna | Estado y disponibilidad del modelo | 503 |
-| GET /v1/model | X-API-Key | Ninguna | Manifiesto, hash y limitaciones | 401 |
-| POST /v1/predict | X-API-Key | texto; idioma en | Probabilidad, umbral y aviso | 401, 422, 503 |
-| GET /v1/clients | X-API-Key | Ninguna | 150 clientes ficticios | 401 |
-| POST /v1/scenario | X-API-Key | Cliente, proporción, mejora, meses, gastos, perfil | Compatibilidad y beneficio supuesto | 401, 404, 422 |
-
-La ruta de salud es pública; las cuatro rutas de negocio requieren clave. El contrato completo de campos y restricciones está en documentos/openapi.json. Los errores no convierten la API en un sistema de autorización de operaciones.
-
-### Peticiones y respuestas observadas
-
-Ejecuté los cinco casos con FastAPI TestClient y su ciclo de arranque real, sin alterar la lógica. evidencias/ejemplos_api.json conserva las respuestas completas. Los siguientes extractos seleccionan campos de esas respuestas; no se presentan como cuerpos completos. En una llamada HTTP real se añade X-API-Key desde el entorno, sin publicar su valor.
-
-GET /health — HTTP 200.
-
-```json
-{
-  "entrada": null,
-  "salida_extracto": {
-    "status": "ok",
-    "model_ready": true,
-    "version": "1.0.0"
-  }
-}
-```
-
-GET /v1/model — HTTP 200.
-
-```json
-{
-  "entrada": null,
-  "salida_extracto": {
-    "sha256": "f48c7496d5a12bd15d535721e3e83c6ef895b1ae7eaccbe7f4f4c60705bb1916",
-    "notice": "Priorizar revisión humana; no es orden de inversión ni predicción de rendimiento.",
-    "joint_target_met": false
-  }
-}
-```
-
-POST /v1/predict — HTTP 200.
-
-```json
-{
-  "entrada": {
-    "texto": "The company reported a decline in operating profit.",
-    "idioma": "en"
-  },
-  "salida_extracto": {
-    "probabilidad_negativa": 0.3544057081827505,
-    "umbral": 0.2,
-    "priorizar_revision": true,
-    "idioma_declarado": "en",
-    "notice": "Priorizar revisión humana; no es orden de inversión ni predicción de rendimiento.",
-    "model_sha256": "f48c7496d5a12bd15d535721e3e83c6ef895b1ae7eaccbe7f4f4c60705bb1916"
-  }
-}
-```
-
-GET /v1/clients — HTTP 200.
-
-```json
-{
-  "entrada": null,
-  "salida_extracto": {
-    "simulados": true,
-    "clientes": [
-      {
-        "cliente_id": "C001",
-        "nombre": "Killer Croc",
-        "arquetipo": "Villano",
-        "perfil_riesgo": "Moderado",
-        "posicion_mxn": 11858000,
-        "fondo_actual": "BBVACR",
-        "serie_actual": "P",
-        "categoria_actual": "Fondos de Estrategias Pesos",
-        "rend_1_anio_actual": 11.93,
-        "clase_activo": "Deuda Corto Plazo",
-        "meses_sin_revision": 6
-      }
-    ]
-  }
-}
-```
-
-POST /v1/scenario — HTTP 200.
-
-```json
-{
-  "entrada": {
-    "cliente_id": "C001",
-    "proporcion": 0.35,
-    "mejora_anual_pp": 3,
-    "meses": 12,
-    "gastos_adicionales_anuales_pp": 0,
-    "perfil_destino": "Moderado"
-  },
-  "salida_extracto": {
-    "simulado": true,
-    "perfil_compatible": true,
-    "monto_migrado_mxn": 4150299.9999999995,
-    "mejora_supuesta_mxn": 124508.99999999999,
-    "corretaje_supuesto_mxn": 83005.99999999999,
-    "gastos_adicionales_mxn": 0.0,
-    "beneficio_incremental_supuesto_mxn": 41503.0,
-    "elegible_para_revision": true,
-    "supuesto": "1 % compra + 1 % venta sobre el mismo nocional. Cálculo lineal, sin impuestos ni garantía. Gastos adicionales sólo si no están ya descontados del rendimiento. No equivale al ingreso neto del banco.",
-    "notice": "Priorizar revisión humana; no es orden de inversión ni predicción de rendimiento."
-  }
-}
-```
-
+| Ruta | Acceso y comprobación |
+|---|---|
+| GET /health | Pública: salud y disponibilidad del modelo |
+| GET /v1/model | Con clave: identidad y límites del artefacto |
+| POST /v1/predict | Con clave: validación, probabilidad y aviso |
+| GET /v1/clients | Con clave: lectura de los 150 casos ficticios |
+| POST /v1/scenario | Con clave: perfil, costos y elegibilidad hipotética |
 
 ## Modelo y datos conservados
 
@@ -251,15 +144,7 @@ Antes de un uso real necesito validación temporal externa, licencia apta para e
 
 La imagen permite una demostración local reproducible y la arquitectura está preparada para desplegarse. Mi decisión es conservarla como prototipo académico con revisión humana; no autorizo con ella operaciones, rotación de fondos para generar comisiones ni promesas de mejores rendimientos.
 
-## Referencias y asistencia
-
-Modelo y evaluación: https://github.com/eduardoaburtoa/actividad6-evaluacion-portafolios
-
-Financial PhraseBank: Malo et al. (2014), corpus conservado bajo CC BY-NC-SA 3.0; licencia en modelos/LICENSE_DATASET.txt.
-
-Normativa de fondos: https://www.bbva.mx/personas/productos/inversion/normativa-de-fondos.html
-
-Rúbrica de Proyecto Fase II y temas 15 y 16 proporcionados por Universidad Tecmilenio. Programación, revisión y documentación con apoyo de ChatGPT/Codex; las métricas corresponden a ejecuciones, no a estimaciones generadas por el asistente.
+La evaluación deriva de la Actividad 6 (Aburto Angulo, 2026b); el corpus mantiene CC BY-NC-SA 3.0 y su licencia en modelos/LICENSE_DATASET.txt. La programación y documentación contaron con ChatGPT/Codex; las métricas son ejecuciones, no estimaciones del asistente.
 
 ## Conclusiones
 
@@ -270,40 +155,32 @@ Docker separa servicios y controla el arranque (Docker, Inc., s. f.-a); FastAPI 
 
 ## Cobertura textual de la rúbrica
 
-Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Las páginas corresponden al PDF de esta revisión; Google Docs puede repaginar según su configuración.
+Los cuatro criterios tienen ponderación de 25 % (Universidad Tecmilenio, 2026c). Durante las ramas de edición, la trazabilidad se verifica por sección. Las páginas se recalcularán en la exportación final; los PDF 1.1.0 permanecen sin cambios hasta entonces.
 
 | Criterio | Sección verificable | Página del PDF |
 |---|---|---|
-| Contenerización y despliegue local | Entorno y protocolo; evidencia Docker | 6 |
-| Integración técnica (API, frontend/backend) | Arquitectura e integración | 3–5 |
-| Pruebas y validación del modelo | Casos extremos; resultados y análisis del comportamiento | 6–9 |
-| Documentación y repositorio | Evidencia y criterios; conclusiones y referencias | 9–11 |
+| Contenerización y despliegue local | Entorno y protocolo; evidencia Docker | Exportación final \|
+| Integración técnica (API, frontend/backend) | Arquitectura e integración | Exportación final \|
+| Pruebas y validación del modelo | Casos extremos; resultados y análisis del comportamiento | Exportación final \|
+| Documentación y repositorio | Evidencia y criterios; conclusiones y referencias | Exportación final \|
 
 ## Referencias
 
-Aburto Angulo, E. (2026). Fase I Business case del motor de señales de rotación de fondos de inversión con IA [Trabajo académico, Universidad Tecmilenio]. Cifras conservadas del caso de negocio y de las instrucciones de continuidad del autor.
+Aburto Angulo, E. (2026a). Fase I Business case del motor de señales de rotación de fondos de inversión con IA [Trabajo académico, Universidad Tecmilenio]. Cifras conservadas del caso de negocio y de las instrucciones de continuidad del autor.
+
+Aburto Angulo, E. (2026b). Actividad 6: Evaluación de portafolios [Código y documentación]. GitHub. https://github.com/eduardoaburtoa/actividad6-evaluacion-portafolios
 
 BBVA México. (s. f.). Normativa de fondos. https://www.bbva.mx/personas/productos/inversion/normativa-de-fondos.html
 
 Docker, Inc. (s. f.-a). Control startup and shutdown order in Compose. https://docs.docker.com/compose/how-tos/startup-order/
 
-Docker, Inc. (s. f.-b). Install Docker Engine on Ubuntu. https://docs.docker.com/engine/install/ubuntu/
-
 FastAPI. (s. f.). Extending OpenAPI. https://fastapi.tiangolo.com/how-to/extending-openapi/
-
-Google Cloud. (s. f.-a). General-purpose machine family pricing. https://cloud.google.com/products/compute/pricing/general-purpose
-
-Google Cloud. (s. f.-b). Cloud Run pricing. https://cloud.google.com/run/pricing
 
 Google Cloud. (s. f.-c). Authenticating service-to-service. https://docs.cloud.google.com/run/docs/authenticating/service-to-service
 
 Google Cloud. (s. f.-d). Configure secrets for services. https://docs.cloud.google.com/run/docs/configuring/services/secrets
 
-Hugging Face. (s. f.). Spaces overview. https://huggingface.co/docs/hub/en/spaces-overview
-
 Malo, P., Sinha, A., Korhonen, P., Wallenius, J., & Takala, P. (2014). Good debt or bad debt: Detecting semantic orientations in economic texts. Journal of the Association for Information Science and Technology, 65(4), 782–796. https://doi.org/10.1002/asi.23062
-
-Render. (s. f.). Deploy for free. https://render.com/docs/free
 
 Streamlit. (s. f.). Streamlit Community Cloud. https://docs.streamlit.io/deploy/streamlit-community-cloud
 
